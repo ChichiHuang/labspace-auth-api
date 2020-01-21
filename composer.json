@@ -1,0 +1,21 @@
+{
+    "name": "labspace/auth-api",
+    "description": "labspace package for auth-api",
+    "type": "library",
+    "require": {
+        "php": "^7.0"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "chichi",
+            "email": "kurapica@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "Labspace\\AuthApi\\": "src/"
+        }
+    }
+}
