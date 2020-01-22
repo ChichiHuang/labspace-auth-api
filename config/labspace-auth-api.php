@@ -19,4 +19,6 @@ return [
 
     'confirm_status_check' => false, //是否檢查該帳號被後台審核成功
 
+    'logout_device_token_clear' => false, //登出時是否清空app裝置token
+
 ];

@@ -160,6 +160,21 @@ class AuthController extends Controller
             } else {
                 $oldToken = $request->header('token');
             }
+
+            $user = auth()->user();
+            
+
+            if($user){
+                $logout_device_token_clear = config('labspace-auth-api.logout_device_token_clear');
+                if($logout_device_token_clear){
+        
+                    $user->update([
+                        'device_token' => null
+                    ]);
+                }
+            }
+            
+
             JWTAuth::setToken($oldToken)->invalidate();
             
         } catch (Exception $e){
