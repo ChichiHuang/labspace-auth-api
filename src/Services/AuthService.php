@@ -123,7 +123,7 @@ class AuthService {
         }
 
         $confirm_status_check = config('labspace-auth-api.confirm_status_check');
-        if($confirm_status){
+        if($confirm_status_check){
             if($user->confirm_status == 0){
                 throw new UserNeedConfirmException();
             }
