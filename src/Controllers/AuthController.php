@@ -38,6 +38,11 @@ class AuthController extends Controller
         DB::beginTransaction();
         try{
             $user = $this->authService->login($request->username,$request->password,$request->role);
+            if($request->has('device_token')){
+                $user->update([
+                    'device_token' => $request->device_token
+                ]);
+            }
             
         } catch (Exception $e){
             DB::rollBack();
@@ -96,6 +101,12 @@ class AuthController extends Controller
                     ],403);
                 }
             }
+        }
+
+        if($request->has('device_token')){
+            $user->update([
+                'device_token' => $request->device_token
+            ]);
         }
 
         

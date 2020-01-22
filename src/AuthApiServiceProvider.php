@@ -17,6 +17,8 @@ class AuthApiServiceProvider extends ServiceProvider
         //融合route
         $this->loadRoutesFrom(__DIR__.'/routes/web.php');
 
+        $this->loadViewsFrom(__DIR__.'/views', 'labspace-auth-api');
+
         //新增config
         $this->publishes([
             __DIR__.'/../config/labspace-auth-api.php' => config_path('labspace-auth-api.php')
@@ -27,7 +29,10 @@ class AuthApiServiceProvider extends ServiceProvider
             __DIR__.'/../migration/2019_05_29_002100_create_social_accounts_table.php' => database_path('migrations/2019_05_29_002100_create_social_accounts_table.php')
         ], 'migration-social');
 
-
+        //新增view
+        $this->publishes([
+            __DIR__.'/views'  => base_path('resources/views/vendor/labspace-auth-api'),
+        ], 'view');
 
     }
 
