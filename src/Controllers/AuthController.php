@@ -95,9 +95,15 @@ class AuthController extends Controller
     //登入後處理
     public function loginResponse($user)
     {
-        //檢查使用者登入權限
-        $this->authService->userCheck($user);
         
+        try{
+            //檢查使用者登入權限
+            $this->authService->userCheck($user);
+
+        } catch (Exception $e){
+           
+            return ErrorService::response($e);
+        }
         return response()->json([
             'status' => true,
             'data' => $this->authService->getUserInfo($user),
