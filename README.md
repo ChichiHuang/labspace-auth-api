@@ -57,7 +57,7 @@ php artisan vendor:publish --tag=config
 
  會新增專屬config檔
  labspace-auth-api.php
- 裡面可以設定登入user model的位置
+ 裡面可以設定登入user model的位置、是否信箱審核、帳號審核
 
 
 ====================

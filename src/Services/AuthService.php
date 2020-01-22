@@ -7,6 +7,7 @@ use App\Models\User;
 use Labspace\AuthApi\Exceptions\LoginFailedException;
 use Labspace\AuthApi\Exceptions\PermissionBanException;
 use Labspace\AuthApi\Exceptions\MailNeedConfirmException;
+use Labspace\AuthApi\Exceptions\UserNeedConfirmException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Auth;
 
@@ -118,6 +119,13 @@ class AuthService {
         if($email_check){
             if($user->confirm_code){
                 throw new MailNeedConfirmException();
+            }
+        }
+
+        $confirm_status_check = config('labspace-auth-api.confirm_status_check');
+        if($confirm_status){
+            if($user->confirm_status == 0){
+                throw new UserNeedConfirmException();
             }
         }
         

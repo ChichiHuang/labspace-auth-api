@@ -17,5 +17,6 @@ return [
 
     'email_confirm_code_check' => true, //是否檢查email 是否認證 
 
+    'confirm_status_check' => false, //是否檢查該帳號被後台審核成功
 
 ];
