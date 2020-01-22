@@ -66,6 +66,7 @@ class AuthController extends Controller
                 //信箱存不存在
                 $user = $this->authService->findBy('username',$request->email,$request->role);
                 if($user){
+                    
                     //信箱存在  自動建立社群連結
                     $this->socialAccountService->add([
                         'provider_id' => $provider_id,
@@ -84,6 +85,17 @@ class AuthController extends Controller
         } else {
             //帳號存在，找到對應使用者
             $user = $social_account->user;
+            //檢查role是不是一致
+            if($request->has('role')){
+                if($user->role != $request->role){
+                    return response()->json([
+                        'status' => false,
+                        'err_code' => 'ACCOUNT_BE_USED_BY_OTHER_ROLE' ,
+                        'err_msg' =>  '此帳號已被其他身份使用，請重新確認',
+                        'err_detail' => null
+                    ],403);
+                }
+            }
         }
 
         

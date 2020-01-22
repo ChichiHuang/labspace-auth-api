@@ -26,7 +26,6 @@ class SocialLoginRequest extends FormRequest
         return [
             'social_id' => 'required',
             'provider' => 'required',
-            'email' => 'required',
         ];
     }
 
