@@ -168,22 +168,8 @@ class AuthController extends Controller
     //無效化token
     public function logout(Request $request)
     {
-        //檢查參數
-        if (!$request->has('token') && !$request->header('token')){
-            return response()->json([
-                'status' => false,
-                'err_code' => 'TOKEN_REQUIRED',
-                'err_msg' => '請輸入token',
-                'err_detail' => null
-            ]);
-        }
-        try {
-            if(!$request->header('token')){
-                $oldToken = $request->input('token');
-            } else {
-                $oldToken = $request->header('token');
-            }
 
+        try {
             $user = auth()->user();
             
 
@@ -198,7 +184,7 @@ class AuthController extends Controller
             }
             
 
-            JWTAuth::setToken($oldToken)->invalidate();
+            auth()->invalidate();
             
         } catch (Exception $e){
 
