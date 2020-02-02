@@ -98,7 +98,7 @@ class AuthController extends Controller
                         'err_code' => 'ACCOUNT_BE_USED_BY_OTHER_ROLE' ,
                         'err_msg' =>  '此帳號已被其他身份使用，請重新確認',
                         'err_detail' => null
-                    ],403);
+                    ]);
                 }
             }
         }
