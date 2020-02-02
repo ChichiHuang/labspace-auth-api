@@ -43,7 +43,7 @@ class AuthJWT extends BaseMiddleware
                     'status'=> false,
                     'err_code'=> 'NO_LOGIN_PERMISSION',
                     'err_msg'=> '無權限登入網站，有任何問題請洽客服',
-                ],419);
+                ]);
             } else {
                 //有帶身份就要檢查
                 if(!is_null($roles) ){
@@ -59,7 +59,7 @@ class AuthJWT extends BaseMiddleware
                         'status'=> false,
                         'err_code'=> 'PERMISSION_DENY',
                         'err_msg'=> '無權限使用功能',
-                    ],419);
+                    ]);
                 }
                 
                 return $next($request);
@@ -76,12 +76,12 @@ class AuthJWT extends BaseMiddleware
                 #refresh 也過期  重新登入
                 return response()->json([
                     'status' => false,
-                    'err_code' => 'TOKEN_FOREVER_EXPIRE',
+                    'err_code' => 'TOKEN_INVALID',
                     'err_msg'=> '請重新登入'
-                ],419);
+                ]);
             }
 
-        } catch (TokenInvalideException $exception) {
+        } /*catch (TokenInvalideException $exception) {
             return response()->json([
                 'status' => false,
                 'err_code' => 'TOKEN_INVALID',
@@ -102,13 +102,13 @@ class AuthJWT extends BaseMiddleware
                 'err_msg'=> 'token invalid'
             ],419);
           
-        } catch(JWTException $exception){
+        } */catch(JWTException $exception){
  
             return response()->json([
                 'status' => false,
                 'err_code' => 'TOKEN_INVALID',
                 'err_msg'=> 'token invalid'
-            ],419);
+            ]);
         }
     }
 
