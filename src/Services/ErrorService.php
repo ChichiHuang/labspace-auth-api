@@ -40,7 +40,7 @@ class ErrorService {
                 'err_code' => 'SERVER_ERROR',
                 'err_msg' =>  '系統發生異常錯誤',
                 'err_detail' =>  $e->getMessage()
-            ]);
+            ],500);
 
 	    //自定義
         } else {
