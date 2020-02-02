@@ -102,12 +102,13 @@ class AuthJWT extends BaseMiddleware
                 'err_msg'=> 'token invalid'
             ],419);
           
-        } catch (Exception $exception) {
+        } catch(JWTException $exception){
+ 
             return response()->json([
                 'status' => false,
-                'err_code' => 'SERVER_ERROR',
+                'err_code' => 'TOKEN_INVALID',
                 'err_msg'=> 'token invalid'
-            ],500); 
+            ],419);
         }
     }
 
