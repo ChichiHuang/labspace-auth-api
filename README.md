@@ -45,10 +45,32 @@ STEP.3
 'jwt' => \Labspace\AuthApi\Middleware\AuthJWT::class, //labsapce jwt
 
 
-如果沒有cors設定也可以加進去
+cors記得設定，有三個地方要加
 
-'cors' => \Labspace\AuthApi\Middleware\CORS::class, //labsapce cross-domain
+$middleware、$middlewareGroups、$routeMiddleware
 
+protected $middleware = [
+    ...
+    \App\Http\Middleware\CORS::class, //cross-domain
+];
+
+protected $middlewareGroups = [
+    'web' => [
+        ....
+    ],
+
+    'api' => [
+        'throttle:60,1',
+        'bindings',
+        \PATH\TO\CORS::class, //cross-domain
+    ],
+];
+
+protected $routeMiddleware = [
+    .
+    .
+    'cors' => \PATH\TO\CORS::class, //labsapce cross-domain
+];
 ============
 
 STEP.4
@@ -175,3 +197,31 @@ http://[server_url]/lab/api/auth/social-login?role=member&social_id=test&provide
     "status": true,
     "success_code": "PLEASE_REGISTER"
 }
+
+
+===========
+
+忘記密碼
+
+username:帳號（信箱）
+
+http://[server_url]/lab/api/auth/forget-password?username=test@gmail.com
+
+
+===========
+
+寄驗證信
+
+注入ConfirmationService
+use Labspace\AuthApi\Services\ConfirmationService;
+
+傳User $user 到function
+
+$this->confirmationService->sendMail($user);
+
+
+============
+
+忘記密碼、寄驗證信若希望修改信件內容，可執行以下指令產生view，自行修改即可
+
+php artisan vendor:publish --tag=view

@@ -12,6 +12,7 @@ use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 use Tymon\JWTAuth\Exceptions\TokenBlacklistedException;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Config;
+use Exception;
 
 class AuthJWT extends BaseMiddleware
 {
@@ -32,6 +33,7 @@ class AuthJWT extends BaseMiddleware
 
             // check token request
             $this->checkForToken($request);
+
             
             //正常就通過
             $user = $this->auth->parseToken()->authenticate();
@@ -83,28 +85,28 @@ class AuthJWT extends BaseMiddleware
             return response()->json([
                 'status' => false,
                 'err_code' => 'TOKEN_INVALID',
-                'err_msg'=> $exception->getMessage()
+                'err_msg'=> 'token invalid'
             ],419);
           
         } catch (UnauthorizedHttpException $exception) {
             return response()->json([
                 'status' => false,
                 'err_code' => 'TOKEN_INVALID',
-                'err_msg'=> $exception->getMessage()
+                'err_msg'=> 'token invalid'
             ],419);
           
         } catch (TokenBlacklistedException $exception) {
             return response()->json([
                 'status' => false,
                 'err_code' => 'TOKEN_INVALID',
-                'err_msg'=> $exception->getMessage()
+                'err_msg'=> 'token invalid'
             ],419);
           
         } catch (Exception $exception) {
             return response()->json([
                 'status' => false,
                 'err_code' => 'SERVER_ERROR',
-                'err_msg'=> $exception->getMessage()
+                'err_msg'=> 'token invalid'
             ],500); 
         }
     }
