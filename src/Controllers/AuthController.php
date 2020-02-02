@@ -135,6 +135,18 @@ class AuthController extends Controller
                 
     }
 
+    //檢查token
+    public function check(Request $request)
+    {
+
+        return response()->json([
+            'status' => true,
+            'data' => null,
+            'success_code'=> 'SUCCESS'
+            
+        ]);
+            
+    }
 
 
     //取得使用者資訊

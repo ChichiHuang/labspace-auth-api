@@ -6,6 +6,7 @@ Route::group(['prefix' => 'lab/api','middleware' => ['cors']],function (){
 		Route::get('labspace', function(){
 		    return 'Hello Labspace package auth api';
 		});
+
 		Route::get('/verify',['as' => 'lab.auth-api.verify','uses'=> 'Labspace\AuthApi\Controllers\ConfirmationController@verify'] );
 		Route::post('/forget-password',['uses'=> 'Labspace\AuthApi\Controllers\ForgetPasswordController@process'] );
 
@@ -14,7 +15,8 @@ Route::group(['prefix' => 'lab/api','middleware' => ['cors']],function (){
 		Route::post('/social-login',['uses'=> 'Labspace\AuthApi\Controllers\AuthController@socialLogin'] );
 		Route::post('/logout',['uses'=> 'Labspace\AuthApi\Controllers\AuthController@logout'] );
 	});
-	Route::group(['prefix' => 'user','middleware' => ['jwt:admin|member']],function (){
+	Route::group(['prefix' => 'user','middleware' => ['jwt']],function (){
+		Route::get('/check','Labspace\AuthApi\Controllers\AuthController@check');
 	    Route::get('/me','Labspace\AuthApi\Controllers\AuthController@getUser');
 	});
 });
