@@ -81,7 +81,14 @@ class AuthJWT extends BaseMiddleware
                 ]);
             }
 
-        } /*catch (TokenInvalideException $exception) {
+        } catch (UnauthorizedHttpException $exception) {
+            return response()->json([
+                'status' => false,
+                'err_code' => 'TOKEN_REQUIRED',
+                'err_msg'=> 'token required'
+            ]);
+          
+        }/*catch (TokenInvalideException $exception) {
             return response()->json([
                 'status' => false,
                 'err_code' => 'TOKEN_INVALID',
@@ -109,7 +116,7 @@ class AuthJWT extends BaseMiddleware
                 'err_code' => 'TOKEN_INVALID',
                 'err_msg'=> 'token invalid'
             ]);
-        }
+        } 
     }
 
 
