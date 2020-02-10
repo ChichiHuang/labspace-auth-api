@@ -17,6 +17,11 @@ use Labspace\AuthApi\Requests\SocialLoginRequest;
 use Labspace\AuthApi\Exceptions\LoginFailedException;
 use Labspace\AuthApi\Exceptions\PermissionBanException;
 use Labspace\AuthApi\Services\ErrorService;
+use Tymon\JWTAuth\Exceptions\JWTException;
+use Tymon\JWTAuth\Exceptions\TokenExpiredException;
+use Tymon\JWTAuth\Exceptions\TokenInvalidException;
+use Tymon\JWTAuth\Exceptions\TokenBlacklistedException;
+use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
 class AuthController extends Controller
 {
@@ -138,25 +143,70 @@ class AuthController extends Controller
     //檢查token
     public function check(Request $request)
     {
-        try{
-            $user = auth()->user();
+    
+
+        try {
+
+            // check token request
+            //JWTAuth::checkForToken($request);
+
+            
+            //正常就通過
+            $user = JWTAuth::authenticate();
+
             if($user->login_permission == 0){
-                throw new PermissionBanException();
-            }
+                throw new Exception('NO_LOGIN_PERMISSION');
+            } 
+
             if($request->has('role')){
                 if($user->role != $request->role){
-                    return response()->json([
-                        'status'=> false,
-                        'err_code'=> 'PERMISSION_DENY',
-                        'err_msg'=> '無權限使用功能',
-                    ]);
+                    throw new Exception('PERMISSION_DENY');
                 }
             }
+            
 
+        } catch (TokenExpiredException $exception) {
+
+            try{
+                $token = $this->auth->refresh();
+                auth()->onceUsingId($this->auth->manager()->getPayloadFactory()->buildClaimsCollection()->toPlainArray()['sub']);
+                return $this->setAuthenticationHeader($next($request), $token);
+            }catch(JWTException $exception){
+                #refresh 也過期  重新登入
+                return response()->json([
+                    'status' => true,
+                    'data' => null,
+                    'success_code'=> 'TOKEN_INVALID'
+                    
+                ]);
+            }
+
+        } catch (UnauthorizedHttpException $exception) {
+
+            return response()->json([
+                'status' => true,
+                'data' => null,
+                'success_code'=> 'TOKEN_REQUIRED'
+                
+            ]);
+          
         } catch (Exception $e){
-            return ErrorService::response($e);
-        }
-        
+            return [
+                'status' => true,
+                'data' => null,
+                'success_code'=> $e->getMessage()
+                
+            ];
+        } catch(JWTException $exception){
+ 
+            return response()->json([
+                'status' => true,
+                'data' => null,
+                'success_code'=> 'TOKEN_INVALID'
+                
+            ]);
+        } 
+
         return response()->json([
             'status' => true,
             'data' => null,
@@ -165,6 +215,24 @@ class AuthController extends Controller
         ]);
             
     }
+
+
+    /**
+    * 檢查字串是否存在
+    *@param str 字串
+    *@param needle 要檢查的
+    *@return date
+    **/
+    private function checkstr($str, $needle){
+
+       $tmparray = explode($needle,$str);
+       if(count($tmparray)>1){
+        return true;
+       } else{
+        return false;
+       }
+    }
+
 
 
     //取得使用者資訊
