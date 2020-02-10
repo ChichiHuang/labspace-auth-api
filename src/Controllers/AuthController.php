@@ -138,7 +138,25 @@ class AuthController extends Controller
     //檢查token
     public function check(Request $request)
     {
+        try{
+            $user = auth()->user();
+            if($user->login_permission == 0){
+                throw new PermissionBanException();
+            }
+            if($request->has('role')){
+                if($user->role != $request->role){
+                    return response()->json([
+                        'status'=> false,
+                        'err_code'=> 'PERMISSION_DENY',
+                        'err_msg'=> '無權限使用功能',
+                    ]);
+                }
+            }
 
+        } catch (Exception $e){
+            return ErrorService::response($e);
+        }
+        
         return response()->json([
             'status' => true,
             'data' => null,
