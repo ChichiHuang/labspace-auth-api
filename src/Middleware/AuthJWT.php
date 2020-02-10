@@ -50,7 +50,7 @@ class AuthJWT extends BaseMiddleware
                     $roles = explode('|', $roles);
 
                     foreach ($roles as $role) {
-                        if(checkstr($user->role, $role)){
+                        if($this->checkstr($user->role, $role)){
                             return $next($request);
                         }
 
@@ -117,6 +117,22 @@ class AuthJWT extends BaseMiddleware
                 'err_msg'=> 'token invalid'
             ]);
         } 
+    }
+
+    /**
+    * 檢查字串是否存在
+    *@param str 字串
+    *@param needle 要檢查的
+    *@return date
+    **/
+    private function checkstr($str, $needle){
+
+       $tmparray = explode($needle,$str);
+       if(count($tmparray)>1){
+        return true;
+       } else{
+        return false;
+       }
     }
 
 
