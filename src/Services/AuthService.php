@@ -32,8 +32,12 @@ class AuthService {
      */
     public function login($username,$password,$role=null)
     {
-        
-        if (!Auth::once(['username' => $username, 'password' => $password])) {
+        if(!is_null($role)){
+            $credential = ['username' => $username, 'password' => $password, 'role' => $role];
+        } else {
+            $credential = ['username' => $username, 'password' => $password];
+        }
+        if (!Auth::once($credential)) {
             throw new LoginFailedException();
         }
 
@@ -47,7 +51,7 @@ class AuthService {
         
 
         $user = $user->where('username',$username)->first();
-        
+
        // $this->userCheck($user);
 
         return $user;
