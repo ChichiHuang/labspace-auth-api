@@ -15,8 +15,9 @@ Route::group(['prefix' => 'lab/api','middleware' => ['cors']],function (){
 		Route::post('/social-login',['uses'=> 'Labspace\AuthApi\Controllers\AuthController@socialLogin'] );
 		Route::post('/logout',['uses'=> 'Labspace\AuthApi\Controllers\AuthController@logout'] );
 	});
+	Route::get('/user/check','Labspace\AuthApi\Controllers\AuthController@check');
 	Route::group(['prefix' => 'user','middleware' => ['jwt']],function (){
-		Route::get('/check','Labspace\AuthApi\Controllers\AuthController@check');
+		//Route::get('/check','Labspace\AuthApi\Controllers\AuthController@check');
 	    Route::get('/me','Labspace\AuthApi\Controllers\AuthController@getUser');
 	});
 });

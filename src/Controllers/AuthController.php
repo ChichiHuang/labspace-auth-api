@@ -146,31 +146,34 @@ class AuthController extends Controller
     
 
         try {
-
+            $token = null;
             // check token request
             //JWTAuth::checkForToken($request);
-
+            JWTAuth::parseToken()->authenticate();
             
             //正常就通過
-            $user = JWTAuth::authenticate();
+            $user = auth()->user();
+            if($user){
+                if($user->login_permission == 0){
+                    throw new Exception('NO_LOGIN_PERMISSION');
+                } 
 
-            if($user->login_permission == 0){
-                throw new Exception('NO_LOGIN_PERMISSION');
-            } 
-
-            if($request->has('role')){
-                if($user->role != $request->role){
-                    throw new Exception('PERMISSION_DENY');
+                if($request->has('role')){
+                    if($user->role != $request->role){
+                        throw new Exception('PERMISSION_DENY');
+                    }
                 }
+            
             }
+
+
             
 
         } catch (TokenExpiredException $exception) {
 
             try{
-                $token = $this->auth->refresh();
-                auth()->onceUsingId($this->auth->manager()->getPayloadFactory()->buildClaimsCollection()->toPlainArray()['sub']);
-                return $this->setAuthenticationHeader($next($request), $token);
+                $token = auth()->refresh();
+
             }catch(JWTException $exception){
                 #refresh 也過期  重新登入
                 return response()->json([
@@ -190,14 +193,14 @@ class AuthController extends Controller
                 
             ]);
           
-        } catch (Exception $e){
+        } /*catch (Exception $e){
             return [
                 'status' => true,
                 'data' => null,
                 'success_code'=> $e->getMessage()
                 
             ];
-        } catch(JWTException $exception){
+        } */catch(JWTException $exception){
  
             return response()->json([
                 'status' => true,
@@ -209,7 +212,7 @@ class AuthController extends Controller
 
         return response()->json([
             'status' => true,
-            'data' => null,
+            'data' => ['token' => $token],
             'success_code'=> 'SUCCESS'
             
         ]);
