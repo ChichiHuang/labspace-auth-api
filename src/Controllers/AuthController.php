@@ -210,9 +210,17 @@ class AuthController extends Controller
             ]);
         } 
 
+        $user_info =  [
+            'email' => $user->email,
+            'name'=> $user->name,
+            'avatar'=> $user->avatar,
+            'id' => $user->id,
+            'role' => $user->role
+        ];
+
         return response()->json([
             'status' => true,
-            'data' => ['token' => $token],
+            'data' => ['token' => $token,'user_info' => $user_info],
             'success_code'=> 'SUCCESS'
             
         ]);
