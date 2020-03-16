@@ -93,6 +93,7 @@ class AuthService {
     {
 
         $user_info =  [
+            'username' => $user->username,
             'email' => $user->email,
             'name'=> $user->name,
             'avatar'=> $user->avatar,

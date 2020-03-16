@@ -211,6 +211,7 @@ class AuthController extends Controller
         } 
 
         $user_info =  [
+            'username' => $user->username,
             'email' => $user->email,
             'name'=> $user->name,
             'avatar'=> $user->avatar,
