@@ -22,6 +22,7 @@ use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 use Tymon\JWTAuth\Exceptions\TokenBlacklistedException;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
+use Log;
 
 class AuthController extends Controller
 {
@@ -145,81 +146,17 @@ class AuthController extends Controller
     {
     
 
-        try {
-            $token = null;
-            // check token request
-            //JWTAuth::checkForToken($request);
-            JWTAuth::parseToken()->authenticate();
-            
-            //正常就通過
-            $user = auth()->user();
-            if($user){
-                if($user->login_permission == 0){
+        $user = auth()->user();
+        if($request->has('role')){
+                if($user->role != $request->role){
                     return response()->json([
                         'status' => true,
                         'data' => null,
                         'success_code'=> 'TOKEN_INVALID'
                         
                     ]);
-                } 
-
-                if($request->has('role')){
-                    if($user->role != $request->role){
-                        return response()->json([
-                            'status' => true,
-                            'data' => null,
-                            'success_code'=> 'TOKEN_INVALID'
-                            
-                        ]);
-                    }
                 }
-            
             }
-
-
-            
-
-        } catch (TokenExpiredException $exception) {
-
-            try{
-                $token = auth()->refresh();
-
-            }catch(JWTException $exception){
-                #refresh 也過期  重新登入
-                return response()->json([
-                    'status' => true,
-                    'data' => null,
-                    'success_code'=> 'TOKEN_INVALID'
-                    
-                ]);
-            }
-
-        } catch (UnauthorizedHttpException $exception) {
-
-            return response()->json([
-                'status' => true,
-                'data' => null,
-                'success_code'=> 'TOKEN_REQUIRED'
-                
-            ]);
-          
-        } /*catch (Exception $e){
-            return [
-                'status' => true,
-                'data' => null,
-                'success_code'=> $e->getMessage()
-                
-            ];
-        } */catch(JWTException $exception){
- 
-            return response()->json([
-                'status' => true,
-                'data' => null,
-                'success_code'=> 'TOKEN_INVALID'
-                
-            ]);
-        } 
-
         $user_info =  [
             'username' => $user->username,
             'email' => $user->email,
@@ -231,7 +168,7 @@ class AuthController extends Controller
 
         return response()->json([
             'status' => true,
-            'data' => ['token' => $token,'user_info' => $user_info],
+            'data' => ['user_info' => $user_info],
             'success_code'=> 'SUCCESS'
             
         ]);

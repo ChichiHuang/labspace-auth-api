@@ -44,6 +44,10 @@ STEP.3
 
 'jwt' => \Labspace\AuthApi\Middleware\AuthJWT::class, //labsapce jwt
 
+如果是web專案有需要check route 請把web_jwt登入驗證的middleware新增到routeMiddleware  
+
+'web_jwt' => \Labspace\AuthApi\Middleware\WebAuthJWT::class, //web jwt
+
 
 cors記得設定，有三個地方要加
 
