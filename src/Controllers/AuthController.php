@@ -155,12 +155,22 @@ class AuthController extends Controller
             $user = auth()->user();
             if($user){
                 if($user->login_permission == 0){
-                    throw new Exception('NO_LOGIN_PERMISSION');
+                    return response()->json([
+                        'status' => true,
+                        'data' => null,
+                        'success_code'=> 'TOKEN_INVALID'
+                        
+                    ]);
                 } 
 
                 if($request->has('role')){
                     if($user->role != $request->role){
-                        throw new Exception('PERMISSION_DENY');
+                        return response()->json([
+                            'status' => true,
+                            'data' => null,
+                            'success_code'=> 'TOKEN_INVALID'
+                            
+                        ]);
                     }
                 }
             
