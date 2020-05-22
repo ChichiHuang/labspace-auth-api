@@ -17,7 +17,7 @@ class CreatePasswordResetsTable extends Migration
             $table->increments('id');
             $table->string('username');
             $table->string('token');
-            $table->chat('status')->default(1);
+            $table->char('status')->default(1);
             $table->timestamp('created_at')->default(\DB::raw('CURRENT_TIMESTAMP'));
         });
     }
