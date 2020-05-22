@@ -81,9 +81,32 @@ STEP.4
 
 php artisan vendor:publish --tag=config
 
+沒有password_resets 表可以打指令產生migration
+php artisan vendor:publish --tag=migration-password-reset
+
  會新增專屬config檔
  labspace-auth-api.php
- 裡面可以設定登入user model的位置、是否信箱審核、帳號審核
+ 裡面可以設定登入user model的位置、password_reset model位置、是否信箱審核、帳號審核
+
+
+
+ResetPassword Model參考：
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class ResetPassword extends Model
+{
+    protected $primaryKey = 'id';
+    protected $table = 'password_resets';
+    public $timestamps = false;
+
+    protected $fillable = [
+        'username','token','created_at','status'
+    ];
+
+}
 
 
 ====================

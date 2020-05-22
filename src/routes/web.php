@@ -9,6 +9,8 @@ Route::group(['prefix' => 'lab/api','middleware' => ['cors']],function (){
 
 		Route::get('/verify',['as' => 'lab.auth-api.verify','uses'=> 'Labspace\AuthApi\Controllers\ConfirmationController@verify'] );
 		Route::post('/forget-password',['uses'=> 'Labspace\AuthApi\Controllers\ForgetPasswordController@process'] );
+		Route::post('/send-password-reset-link',['uses'=> 'Labspace\AuthApi\Controllers\ForgetPasswordController@sendPasswordResetLink'] );
+		Route::post('/change-password-by-reset-link',['uses'=> 'Labspace\AuthApi\Controllers\ForgetPasswordController@changePasswordByResetLink'] );
 
 
 		Route::post('/login',['uses'=> 'Labspace\AuthApi\Controllers\AuthController@login'] );

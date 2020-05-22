@@ -15,6 +15,10 @@ return [
 
     'user_model' => 'App\Models\User', //user model 位置
 
+    'reset_password_model' => 'App\Models\ResetPassword', //密碼重置 位置
+
+    'reset_password_url' => env('http://sample.com/reset-password','http://sample.com'), //密碼重置畫面連結
+
     'email_confirm_code_check' => true, //是否檢查email 是否認證 
 
     'confirm_status_check' => false, //是否檢查該帳號被後台審核成功
