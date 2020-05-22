@@ -31,7 +31,7 @@ class AuthApiServiceProvider extends ServiceProvider
 
         //新增migration 重置密碼
         $this->publishes([
-            __DIR__.'/../migration/2014_10_12_100000_create_password_resets_table' => database_path('migrations/2014_10_12_100000_create_password_resets_table')
+            __DIR__.'/../migration/2014_10_12_100000_create_password_resets_table.php' => database_path('migrations/2014_10_12_100000_create_password_resets_table.php')
         ], 'migration-password-reset');
 
         //新增view
