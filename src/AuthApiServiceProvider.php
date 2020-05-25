@@ -34,6 +34,12 @@ class AuthApiServiceProvider extends ServiceProvider
             __DIR__.'/../migration/2014_10_12_100000_create_password_resets_table.php' => database_path('migrations/2014_10_12_100000_create_password_resets_table.php')
         ], 'migration-password-reset');
 
+
+        //新增migration 簡訊
+        $this->publishes([
+            __DIR__.'/../migration/2014_10_12_100000_create_sms_confirmations_table.php' => database_path('migrations/2014_10_12_100000_create_sms_confirmations_table.php')
+        ], 'migration-sms-confirmation');
+        
         //新增view
         $this->publishes([
             __DIR__.'/views'  => base_path('resources/views/vendor/labspace-auth-api'),

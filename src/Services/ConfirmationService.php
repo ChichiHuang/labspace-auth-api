@@ -11,7 +11,7 @@ class ConfirmationService {
     
 
     /**
-     * ConfirmationService constructor.
+     * ConfirmationService constructor. (信箱)
      *
      */
     public function __construct(

@@ -14,7 +14,9 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Labspace\AuthApi\Exceptions\UserNotFoundException;
 use Labspace\AuthApi\Requests\ForgetPasswordRequest;
 use Labspace\AuthApi\Requests\ChangePasswordByResetLinkRequest;
+use Labspace\AuthApi\Requests\ChangePasswordBySmsCodeRequest;
 use Labspace\AuthApi\Services\ErrorService;
+use Labspace\AuthApi\Services\SmsConfirmationService;
 
 class ForgetPasswordController extends Controller
 {
@@ -84,6 +86,33 @@ class ForgetPasswordController extends Controller
             }
             
             $this->resetPasswordService->resetPassword($request->username,$request->password);
+        } catch (Exception $e){
+
+            return ErrorService::response($e);
+
+        }
+
+        return response()->json([
+            'status' => true,
+            'data'=> null,
+            'success_code' => 'SUCCESS'
+        ]);
+    }
+
+
+  
+
+     //用簡訊驗證碼重設密碼
+    public function changePasswordBySmsCode(ChangePasswordBySmsCodeRequest $request)
+    {
+
+        try{
+            //驗證簡訊
+            $this->resetPasswordService->verifySmsCode($request->username,$request->code);
+            $this->resetPasswordService->resetPassword($request->username,$request->password);
+
+            //清空簡訊
+            SmsConfirmationService::deleteCodeByUsername($request->username);
         } catch (Exception $e){
 
             return ErrorService::response($e);

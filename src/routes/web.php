@@ -11,6 +11,12 @@ Route::group(['prefix' => 'lab/api','middleware' => ['cors']],function (){
 		Route::post('/forget-password',['uses'=> 'Labspace\AuthApi\Controllers\ForgetPasswordController@process'] );
 		Route::post('/send-password-reset-link',['uses'=> 'Labspace\AuthApi\Controllers\ForgetPasswordController@sendPasswordResetLink'] );
 		Route::post('/change-password-by-reset-link',['uses'=> 'Labspace\AuthApi\Controllers\ForgetPasswordController@changePasswordByResetLink'] );
+		Route::post('/change-password-by-sms-code',['uses'=> 'Labspace\AuthApi\Controllers\ForgetPasswordController@changePasswordBySmsCode'] );
+
+
+		//寄簡訊
+		Route::post('/sms-send-code/phone',['uses'=> 'Labspace\AuthApi\Controllers\SmsSendController@sendCodeByPhone'] );
+		Route::post('/sms-send-code/username',['uses'=> 'Labspace\AuthApi\Controllers\SmsSendController@sendCodeByUsername'] );
 
 
 		Route::post('/login',['uses'=> 'Labspace\AuthApi\Controllers\AuthController@login'] );

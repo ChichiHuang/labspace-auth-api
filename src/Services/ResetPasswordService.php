@@ -8,6 +8,7 @@ use Mail;
 use Labspace\AuthApi\Exceptions\UserNotFoundException;
 use Log;
 use Hash;
+use Labspace\AuthApi\Services\SmsConfirmationService;
 
 class ResetPasswordService {
     
@@ -76,6 +77,8 @@ class ResetPasswordService {
         }
 
         $token = $this->randomkeys($length =10);
+
+        $password_reset_model->where('username',$user->username)->update(['status' => 0]);
 
         $password_reset_model->create([
             'username' => $user->username,
@@ -148,6 +151,18 @@ class ResetPasswordService {
 
     }
 
+    /**
+     * 驗證簡訊驗證碼能不能用
+     * @return void
+     */
+    public function verifySmsCode($username,$code)
+    {
+        $phone =  SmsConfirmationService::findPhoneByUsername($username);
+        SmsConfirmationService::verifyCode($phone,$code);
+
+    }
+
+   
    
     /**
      * 重設密碼
