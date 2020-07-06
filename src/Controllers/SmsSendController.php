@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Labspace\AuthApi\Exceptions\UserNotFoundException;
 use Labspace\AuthApi\Requests\SmsSendByPhoneRequest;
 use Labspace\AuthApi\Requests\SmsSendByUsernameRequest;
+use Labspace\AuthApi\Requests\SmsSendVerifyRequest;
 use Labspace\AuthApi\Services\ErrorService;
 
 class SmsSendController extends Controller
@@ -64,6 +65,24 @@ class SmsSendController extends Controller
             'success_code' => 'SUCCESS'
         ]);
     }
-  
+    
+    //簡訊認證
+    public function codeVerify(SmsSendVerifyRequest $request)
+    {
+        try{
+            SmsConfirmationService::verifyCode($request->phone,$request->code);
+
+
+        } catch (Exception $e){
+            return ErrorService::response($e);
+
+        }
+
+        return response()->json([
+            'status' => true,
+            'data'=> null,
+            'success_code' => 'SUCCESS'
+        ]);
+    }
 
 }

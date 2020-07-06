@@ -17,6 +17,7 @@ Route::group(['prefix' => 'lab/api','middleware' => ['cors']],function (){
 		//寄簡訊
 		Route::post('/sms-send-code/phone',['uses'=> 'Labspace\AuthApi\Controllers\SmsSendController@sendCodeByPhone'] );
 		Route::post('/sms-send-code/username',['uses'=> 'Labspace\AuthApi\Controllers\SmsSendController@sendCodeByUsername'] );
+		Route::post('/sms-send-code/verify',['uses'=> 'Labspace\AuthApi\Controllers\SmsSendController@codeVerify'] );
 
 
 		Route::post('/login',['uses'=> 'Labspace\AuthApi\Controllers\AuthController@login'] );

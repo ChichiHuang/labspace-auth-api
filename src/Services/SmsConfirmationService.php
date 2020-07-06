@@ -40,10 +40,6 @@ class SmsConfirmationService {
         ]);
         $status = 1;
 
-        if(config('labspace-auth-api.sms.code_to_log')){
-        	Log::info($code);
-        }
-        
 
         $send_result = SmsService::sendSmsMessage($phone, '['.config('labspace-auth-api.sms.from_name').'] 簡訊驗證碼：'.$code.'。請於10分鐘內完成驗證，請勿代收簡訊防詐騙');
         if(!$send_result['status']){
@@ -81,8 +77,9 @@ class SmsConfirmationService {
 
         //驗證
         if (!Hash::check($code, $item->token)) {
-            $item->update(['status' => 2]);
             throw new SmsVerifyFailedException();
+        } else {
+            $item->update(['status' => 2]);
         }
 
 	}
