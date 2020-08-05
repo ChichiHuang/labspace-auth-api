@@ -41,7 +41,7 @@ class SmsConfirmationService {
         $status = 1;
 
 
-        $send_result = SmsService::sendSmsMessage($phone, '['.config('labspace-auth-api.sms.from_name').'] 簡訊驗證碼：'.$code.'。請於10分鐘內完成驗證，請勿代收簡訊防詐騙');
+        $send_result = SmsService::sendSmsMessage($phone, '['.config('labspace-auth-api.sms.from_name').']簡訊驗證碼:'.$code);
         if(!$send_result['status']){
         	$status = 0;
         } 
