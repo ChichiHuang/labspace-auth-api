@@ -16,7 +16,16 @@ class SmsService {
       	
         $result_sms = file_get_contents($sms_url);
         $colume = explode("\r\n", $result_sms);
-        $status_code = explode("=",$colume[1]);
+        $status_code = explode("=",$colume[2]);
+
+        /*
+        回傳參考
+        [1]
+        msgid=1940439281
+        statuscode=0
+        AccountPoint=297
+
+        */
 
         //$result_sms = iconv("big5","UTF-8",$result_sms);
         switch ($status_code[1]) {
